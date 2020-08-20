@@ -1,4 +1,4 @@
 OpenJUMP migration documentation
 ================================
 
-[Migrate from SVN to Git](MIGRATE.md)
+[Migrate from SVN to Git](MIGRATION.md)
