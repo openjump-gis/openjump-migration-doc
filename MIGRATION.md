@@ -117,7 +117,13 @@ $ svn log -q https://svn.code.sf.net/p/jump-pilot/code/ | ./authorfilter.py > au
 
 To perform the conversion of the Subversion repository into a local Git one, svn2git is preferred to svn-git for the reasons already given in the [Environment section](#environment), mainly because it has the advantage to automatically convert the SVN tags and branches into Git tags and branches, with the appropriate Git structure.
 
-If needed, svn2git also allows to exclude some parts of the SVN repository during this conversion process, based on exclusion patterns (see ), which could be useful to restructure some parts of the project, such as the documentation for instance, and therefore diminish the size of the main repository. Indeed, it is often advised to avoid adding binary files to a Git repository due to the way Git stores history. More information about this last point is available [here](https://docs.microsoft.com/en-us/azure/devops/learn/git/centralized-to-git#binary-files-and-tools).
+If needed, svn2git also allows to exclude some parts of the SVN repository during this conversion process, based on directory names and/or exclusion patterns. A dummy example of exclusion patterns (``'.*~$'``) could be:
+
+```sh
+svn2git svn://svn.code.sf.net/p/jump-pilot/code/core --exclude doc --exclude '.*~$'
+```
+
+This could be useful to restructure some parts of the project, such as the documentation for instance, and therefore to diminish the size of the main repository. Indeed, it is often advised to avoid adding binary files to a Git repository due to the way Git stores history. More information about this last point is available [here](https://docs.microsoft.com/en-us/azure/devops/learn/git/centralized-to-git#binary-files-and-tools).
 
 Based on svn2git, the following bash commands are used to convert the OpenJUMP core SVN repository. This includes the conversion of the authors based on the `authors.txt` file previously created (this file needs to be in the same directory, here `openjump-migration`, otherwise its path needs to be specified):
 
@@ -161,7 +167,7 @@ Then, to create a matching `.gitignore` into each directory, use:
 git svn create-ignore
 ```
 
-**Important note:** the first conversion attempt was based on the use of the *ra_serf* repository access module provided by Subversion. This module is used for accessing a repository via WebDAV protocol using serf, and can handle both `http` and `https` schemes. So the conversion used this bash command:
+**Important note:** the first conversion attempt was based on the use of the `ra_serf` repository access module provided by Subversion. This module is used for accessing a repository via `WebDAV` protocol using `serf`, and can handle both `http` and `https` schemes. So the conversion used this bash command:
 
 ```sh
 svn2git https://svn.code.sf.net/p/jump-pilot/code/core --revision 859:6242 --authors authors.txt
@@ -169,7 +175,7 @@ svn2git https://svn.code.sf.net/p/jump-pilot/code/core --revision 859:6242 --aut
 
 This attempt failed due to the following error: `ra_serf: The server sent a truncated HTTP response body`.
 
-A second conversion has been attempted, based on the use of the *ra_svn* Subversion module rather than the *ra_serf* module. The *ra_svn* module is used for accessing a repository using the `svn` network protocol. This second attempt succeeded.
+A second conversion has been attempted, based on the use of the `ra_svn` Subversion module rather than the `ra_serf` module. The `ra_svn` module is used for accessing a repository using the `svn` network protocol. This second attempt succeeded.
 
 
 ### 3. Initialise a new Git repository on GitHub
